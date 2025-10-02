@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+<meta charset="UTF-8">
+<title>منصة التمارين الدراسية</title>
+<style>
+body { font-family: Arial, sans-serif; direction: rtl; background: #f0f8ff; margin: 0; padding: 0; }
+header { background: #4a90e2; color: white; padding: 20px; text-align: center; }
+h1 { margin: 0; font-size: 2rem; }
+.subjects { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 15px; padding: 20px; }
+.subject-box { background: #ffffff; padding: 20px; border-radius: 10px; text-align: center; cursor: pointer; transition: transform 0.2s, box-shadow 0.2s; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+.subject-box:hover { transform: translateY(-5px); box-shadow: 0 5px 15px rgba(0,0,0,0.2); }
+.subject-box h2 { margin: 0; color: #333; }
+.exercise-list { max-width: 800px; margin: 20px auto; padding: 0 20px; }
+.exercise { background: #e6f0ff; padding: 15px; margin-bottom: 10px; border-radius: 8px; }
+.exercise .teacher { font-weight: bold; color: #333; }
+.exercise img { max-width: 100%; margin-top: 10px; border-radius: 5px; }
+.add-exercise { max-width: 800px; margin: 20px auto; background: #fff; padding: 20px; border-radius: 10px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+input, textarea, select, button { width: 100%; padding: 8px; margin: 5px 0; border-radius: 5px; border: 1px solid #ccc; }
+button { background: #4a90e2; color: white; border: none; cursor: pointer; }
+button:hover { background: #357ab8; }
+</style>
+</head>
+<body>
+
+<header>
+<h1>📘 منصة التمارين الدراسية</h1>
+</header>
+
+<section class="subjects">
+  <div class="subject-box" onclick="showExercises('الرياضيات')"><h2>الرياضيات</h2></div>
+  <div class="subject-box" onclick="showExercises('الفيزياء')"><h2>الفيزياء</h2></div>
+  <div class="subject-box" onclick="showExercises('التاريخ')"><h2>التاريخ</h2></div>
+  <div class="subject-box" onclick="showExercises('الجغرافيا')"><h2>الجغرافيا</h2></div>
+  <div class="subject-box" onclick="showExercises('التربية الإسلامية')"><h2>التربية الإسلامية</h2></div>
+  <div class="subject-box" onclick="showExercises('اللغة العربية')"><h2>اللغة العربية</h2></div>
+  <div class="subject-box" onclick="showExercises('اللغة الإنجليزية')"><h2>اللغة الإنجليزية</h2></div>
+</section>
+
+<div class="exercise-list" id="exerciseList">
+<h2 id="currentSubject">اختر مادة لعرض التمارين</h2>
+</div>
+
+<div class="add-exercise">
+<h2>➕ إضافة تمرين أو درس جديد</h2>
+<label>اسم الأستاذ:</label>
+<input type="text" id="teacherName" placeholder="اكتب اسمك هنا">
+
+<label>المادة:</label>
+<select id="subjectSelect">
+  <option>الرياضيات</option>
+  <option>الفيزياء</option>
+  <option>التاريخ</option>
+  <option>الجغرافيا</option>
+  <option>التربية الإسلامية</option>
+  <option>اللغة العربية</option>
+  <option>اللغة الإنجليزية</option>
+</select>
+
+<label>نص التمرين / الملخص:</label>
+<textarea id="exerciseText" rows="3" placeholder="اكتب التمرين هنا"></textarea>
+
+<label>اختيار صورة للسلسلة / الدرس (اختياري):</label>
+<input type="file" id="exerciseImage" accept="image/*">
+
+<button onclick="addExercise()">نشر التمرين</button>
+</div>
+
+<script>
+let exercisesDB = JSON.parse(localStorage.getItem("exercisesDB") || "[]");
+
+function addExercise() {
+  let teacher = document.getElementById("teacherName").value.trim();}
