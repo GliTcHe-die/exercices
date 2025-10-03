@@ -44,7 +44,7 @@ button:hover{ background:#357ab8;}
   <button onclick="goBack()">⬅ Retour aux matières</button>
   <input type="text" id="teacherName" placeholder="Nom du professeur">
   <textarea id="exerciseText" placeholder="Texte de l'exercice"></textarea>
-  <input type="file" id="exerciseImageFile" accept="image/*">
+  <input type="url" id="exerciseImage" placeholder="Lien direct de l'image">
   <input type="password" id="teacherCode" placeholder="Code professeur">
   <button onclick="addExercise()">Publier l'exercice</button>
 </div>
@@ -90,21 +90,11 @@ function addExercise(){
   var teacher = document.getElementById("teacherName").value.trim();
   var text = document.getElementById("exerciseText").value.trim();
   var code = document.getElementById("teacherCode").value.trim();
-  var fileInput = document.getElementById("exerciseImageFile");
+  var image = document.getElementById("exerciseImage").value.trim();
 
   if(code !== SECRET_CODE){ alert("Code incorrect !"); return; }
   if(!teacher || !text){ alert("Remplissez tous les champs."); return; }
 
-  if(fileInput.files.length > 0){
-    var reader = new FileReader();
-    reader.onload = function(e){
-      saveExercise(teacher, text, e.target.result);
-    }
-    reader.readAsDataURL(fileInput.files[0]);
-  } else saveExercise(teacher, text, "");
-}
-
-function saveExercise(teacher, text, image){
   exercisesDB.push({teacher: teacher, subject: currentSubject, text: text, image: image});
   localStorage.setItem("exercisesDB", JSON.stringify(exercisesDB));
   resetInputs();
@@ -124,7 +114,7 @@ function deleteExercise(index){
 function resetInputs(){
   document.getElementById("teacherName").value = "";
   document.getElementById("exerciseText").value = "";
-  document.getElementById("exerciseImageFile").value = "";
+  document.getElementById("exerciseImage").value = "";
   document.getElementById("teacherCode").value = "";
 }
 
