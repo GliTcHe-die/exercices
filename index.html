@@ -1,73 +1,139 @@
 <!DOCTYPE html>
-<html lang="ar">
+<html lang="fr">
 <head>
 <meta charset="UTF-8">
-<title>منصة التمارين الدراسية</title>
+<title>📘 Plateforme des exercices</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <style>
-body { font-family: Arial, sans-serif; direction: rtl; background: #f0f8ff; margin: 0; padding: 0; }
-header { background: #4a90e2; color: white; padding: 20px; text-align: center; }
-h1 { margin: 0; font-size: 2rem; }
-.subjects { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 15px; padding: 20px; }
-.subject-box { background: #ffffff; padding: 20px; border-radius: 10px; text-align: center; cursor: pointer; transition: transform 0.2s, box-shadow 0.2s; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
-.subject-box:hover { transform: translateY(-5px); box-shadow: 0 5px 15px rgba(0,0,0,0.2); }
-.subject-box h2 { margin: 0; color: #333; }
-.exercise-list { max-width: 800px; margin: 20px auto; padding: 0 20px; }
-.exercise { background: #e6f0ff; padding: 15px; margin-bottom: 10px; border-radius: 8px; }
-.exercise .teacher { font-weight: bold; color: #333; }
-.exercise img { max-width: 100%; margin-top: 10px; border-radius: 5px; }
-.add-exercise { max-width: 800px; margin: 20px auto; background: #fff; padding: 20px; border-radius: 10px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
-input, textarea, select, button { width: 100%; padding: 8px; margin: 5px 0; border-radius: 5px; border: 1px solid #ccc; }
-button { background: #4a90e2; color: white; border: none; cursor: pointer; }
-button:hover { background: #357ab8; }
+body { font-family: Arial,sans-serif; background:#1e1e2f; color:#fff; margin:0; padding:0; }
+header { background:#2c2c44; padding:20px; text-align:center; }
+h1 { margin:0; }
+.subjects { display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:15px; padding:20px;}
+.subject-box { background:#2e2e4a; padding:20px; border-radius:10px; text-align:center; cursor:pointer; transition:0.2s;}
+.subject-box:hover { background:#3b3b5c; transform:translateY(-5px);}
+.exercise-list { max-width:800px; margin:20px auto; padding:0 20px;}
+.exercise { background:#2b2b42; padding:15px; margin-bottom:10px; border-radius:8px; }
+.exercise img { max-width:100%; margin-top:10px; border-radius:5px;}
+.add-exercise { display:none; max-width:800px; margin:20px auto; background:#2b2b42; padding:20px; border-radius:10px;}
+input, textarea, button { width:100%; padding:8px; margin:5px 0; border-radius:5px; border:none; }
+button { background:#4a90e2; color:white; cursor:pointer;}
+button:hover{ background:#357ab8;}
 </style>
 </head>
 <body>
 
 <header>
-<h1>📘 منصة التمارين الدراسية</h1>
+  <h1>📘 Plateforme des exercices</h1>
 </header>
 
-<section class="subjects">
-  <div class="subject-box" onclick="showExercises('الرياضيات')"><h2>الرياضيات</h2></div>
-  <div class="subject-box" onclick="showExercises('الفيزياء')"><h2>الفيزياء</h2></div>
-  <div class="subject-box" onclick="showExercises('التاريخ')"><h2>التاريخ</h2></div>
-  <div class="subject-box" onclick="showExercises('الجغرافيا')"><h2>الجغرافيا</h2></div>
-  <div class="subject-box" onclick="showExercises('التربية الإسلامية')"><h2>التربية الإسلامية</h2></div>
-  <div class="subject-box" onclick="showExercises('اللغة العربية')"><h2>اللغة العربية</h2></div>
-  <div class="subject-box" onclick="showExercises('اللغة الإنجليزية')"><h2>اللغة الإنجليزية</h2></div>
+<section class="subjects" id="subjectsSection">
+  <div class="subject-box" onclick="selectSubject('Mathématiques')">Mathématiques</div>
+  <div class="subject-box" onclick="selectSubject('Physique')">Physique</div>
+  <div class="subject-box" onclick="selectSubject('Histoire')">Histoire</div>
+  <div class="subject-box" onclick="selectSubject('Géographie')">Géographie</div>
+  <div class="subject-box" onclick="selectSubject('Éducation islamique')">Éducation islamique</div>
+  <div class="subject-box" onclick="selectSubject('Français')">Français</div>
+  <div class="subject-box" onclick="selectSubject('Anglais')">Anglais</div>
 </section>
 
 <div class="exercise-list" id="exerciseList">
-<h2 id="currentSubject">اختر مادة لعرض التمارين</h2>
+  <h2>Choisissez une matière pour voir les exercices</h2>
 </div>
 
-<div class="add-exercise">
-<h2>➕ إضافة تمرين أو درس جديد</h2>
-<label>اسم الأستاذ:</label>
-<input type="text" id="teacherName" placeholder="اكتب اسمك هنا">
-
-<label>المادة:</label>
-<select id="subjectSelect">
-  <option>الرياضيات</option>
-  <option>الفيزياء</option>
-  <option>التاريخ</option>
-  <option>الجغرافيا</option>
-  <option>التربية الإسلامية</option>
-  <option>اللغة العربية</option>
-  <option>اللغة الإنجليزية</option>
-</select>
-
-<label>نص التمرين / الملخص:</label>
-<textarea id="exerciseText" rows="3" placeholder="اكتب التمرين هنا"></textarea>
-
-<label>اختيار صورة للسلسلة / الدرس (اختياري):</label>
-<input type="file" id="exerciseImage" accept="image/*">
-
-<button onclick="addExercise()">نشر التمرين</button>
+<div class="add-exercise" id="addExerciseBox">
+  <button onclick="goBack()">⬅ Retour aux matières</button>
+  <input type="text" id="teacherName" placeholder="Nom du professeur">
+  <textarea id="exerciseText" placeholder="Texte de l'exercice"></textarea>
+  <input type="file" id="exerciseImageFile" accept="image/*">
+  <input type="password" id="teacherCode" placeholder="Code professeur">
+  <button onclick="addExercise()">Publier l'exercice</button>
 </div>
 
 <script>
-let exercisesDB = JSON.parse(localStorage.getItem("exercisesDB") || "[]");
+var SECRET_CODE = "aristote";
+var currentSubject = null;
+var exercisesDB = JSON.parse(localStorage.getItem("exercisesDB") || "[]");
 
-function addExercise() {
-  let teacher = document.getElementById("teacherName").value.trim();}
+function selectSubject(subject){
+  currentSubject = subject;
+  document.getElementById("subjectsSection").style.display = "none";
+  document.getElementById("addExerciseBox").style.display = "block";
+  showExercises(subject);
+}
+
+function goBack(){
+  document.getElementById("subjectsSection").style.display = "grid";
+  document.getElementById("addExerciseBox").style.display = "none";
+  document.getElementById("exerciseList").innerHTML = '<h2>Choisissez une matière pour voir les exercices</h2>';
+}
+
+function showExercises(subject){
+  var container = document.getElementById("exerciseList");
+  container.innerHTML = "<h2>" + subject + "</h2>";
+  var filtered = exercisesDB.filter(function(ex){ return ex.subject === subject; });
+  if(filtered.length === 0){
+    container.innerHTML += "<p>Aucun exercice pour l'instant.</p>";
+  } else {
+    for(var i=0; i<filtered.length; i++){
+      var div = document.createElement("div");
+      div.className = "exercise";
+      div.innerHTML = "<div>👨‍🏫 " + filtered[i].teacher + "</div>" +
+                      "<p>" + filtered[i].text + "</p>" +
+                      (filtered[i].image ? "<img src='" + filtered[i].image + "'>" : "") +
+                      "<button onclick='deleteExercise(" + i + ")'>Supprimer</button>";
+      container.appendChild(div);
+    }
+  }
+}
+
+function addExercise(){
+  var teacher = document.getElementById("teacherName").value.trim();
+  var text = document.getElementById("exerciseText").value.trim();
+  var code = document.getElementById("teacherCode").value.trim();
+  var fileInput = document.getElementById("exerciseImageFile");
+
+  if(code !== SECRET_CODE){ alert("Code incorrect !"); return; }
+  if(!teacher || !text){ alert("Remplissez tous les champs."); return; }
+
+  if(fileInput.files.length > 0){
+    var reader = new FileReader();
+    reader.onload = function(e){
+      saveExercise(teacher, text, e.target.result);
+    }
+    reader.readAsDataURL(fileInput.files[0]);
+  } else saveExercise(teacher, text, "");
+}
+
+function saveExercise(teacher, text, image){
+  exercisesDB.push({teacher: teacher, subject: currentSubject, text: text, image: image});
+  localStorage.setItem("exercisesDB", JSON.stringify(exercisesDB));
+  resetInputs();
+  showExercises(currentSubject);
+}
+
+function deleteExercise(index){
+  var code = prompt("Entrez le code professeur pour supprimer :");
+  if(code === SECRET_CODE){
+    exercisesDB.splice(index, 1);
+    localStorage.setItem("exercisesDB", JSON.stringify(exercisesDB));
+    showExercises(currentSubject);
+    alert("Exercice supprimé !");
+  } else alert("Code incorrect !");
+}
+
+function resetInputs(){
+  document.getElementById("teacherName").value = "";
+  document.getElementById("exerciseText").value = "";
+  document.getElementById("exerciseImageFile").value = "";
+  document.getElementById("teacherCode").value = "";
+}
+
+window.onload = function(){
+  if(exercisesDB.length > 0){
+    showExercises(exercisesDB[0].subject);
+  }
+}
+</script>
+
+</body>
+</html>
